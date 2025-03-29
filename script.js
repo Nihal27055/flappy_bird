@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let score = 0;
     let frames = 0;
     let bestScore = 0;
-    let speedMultiplier = 3.0;
+    let speedMultiplier = 1.0;
     
     // Bird object
     const bird = {
@@ -32,9 +32,9 @@ document.addEventListener('DOMContentLoaded', function() {
         y: canvas.height / 2,
         width: 34,
         height: 24,
-        gravity: 0.25,
+        gravity: 0.2,
         velocity: 0,
-        jump: 5.0,
+        jump: 4.5,
         rotation: 0,
         
         draw: function() {
@@ -271,7 +271,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Foreground (ground)
     const foreground = {
         h: 80,
-        dx: 4,
+        dx: 2,
         
         draw: function() {
             ctx.fillStyle = '#ded895'; // Ground color
@@ -288,8 +288,8 @@ document.addEventListener('DOMContentLoaded', function() {
         position: [],
         gap: 160,
         maxYPos: -80,
-        baseSpeed: 2.5,
-        dx: 2.5,
+        baseSpeed: 1.2,
+        dx: 1.2,
         
         draw: function() {
             for (let i = 0; i < this.position.length; i++) {
@@ -311,20 +311,11 @@ document.addEventListener('DOMContentLoaded', function() {
         update: function() {
             if (gameState !== GAME_STATE.PLAYING) return;
             
-            // Adjust speed based on score
-            // Speed dramatically increases at score 10, 20, 30, etc.
-            // Calculate how many multiples of 10 in the score
+            // Gradually increase speed based on score
             const scoreLevel = Math.floor(score / 10);
             
-            // If score is a multiple of 10 (10, 20, 30, etc), apply high speed, otherwise normal speed
-            let expectedMultiplier;
-            if (score > 0 && score % 10 === 0) {
-                // Apply high speed for multiple of 10
-                expectedMultiplier = 12.0;
-            } else {
-                // Normal speed increases with score level
-                expectedMultiplier = 3.0 + scoreLevel * 1.0;
-            }
+            // Calculate speed multiplier - gradual increase
+            let expectedMultiplier = 1.0 + (scoreLevel * 0.2); // Add 0.2 every 10 points
             
             // Check if multiplier has changed
             if (expectedMultiplier !== speedMultiplier) {
@@ -332,19 +323,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.dx = this.baseSpeed * speedMultiplier;
                 
                 // Make pipes appear more frequently as score increases
-                pipeSpawnRate = Math.max(70, 120 - scoreLevel * 5);
+                pipeSpawnRate = Math.max(80, 120 - scoreLevel * 5);
                 
                 // Visual feedback when speed increases
                 if (score > 0 && score % 10 === 0) {
                     // Flash the score to indicate speed increase
-                    scoreElement.style.fontSize = '60px';
-                    scoreElement.style.color = '#FF0000'; // Bright red for dramatic effect
-                    // Add screen flash effect
-                    document.body.style.backgroundColor = '#FFF';
+                    scoreElement.style.fontSize = '50px';
+                    scoreElement.style.color = '#FF6347'; // Tomato color
                     setTimeout(function() {
                         scoreElement.style.fontSize = '40px';
                         scoreElement.style.color = 'white';
-                        document.body.style.backgroundColor = '';
                     }, 300);
                 }
             }
@@ -390,13 +378,13 @@ document.addEventListener('DOMContentLoaded', function() {
         reset: function() {
             this.position = [];
             this.dx = this.baseSpeed; // Reset speed
-            speedMultiplier = 3.0; // Reset to initial higher speed of 3.0
-            pipeSpawnRate = 100; // Reduced from 120 to 100 for more frequent pipes
+            speedMultiplier = 1.0; // Reset to initial speed of 1.0
+            pipeSpawnRate = 120; // Reset to original spawn rate
         }
     };
     
     // Variable for pipe spawn rate
-    let pipeSpawnRate = 100;
+    let pipeSpawnRate = 120;
     
     // Game loops
     function render() {
