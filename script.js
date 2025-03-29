@@ -31,9 +31,9 @@ document.addEventListener('DOMContentLoaded', function() {
         y: canvas.height / 2,
         width: 34,
         height: 24,
-        gravity: 0.25,
+        gravity: 0.15,
         velocity: 0,
-        jump: 4.6,
+        jump: 3.8,
         rotation: 0,
         
         draw: function() {
@@ -170,9 +170,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Pipes
     const pipes = {
         position: [],
-        gap: 85,
-        maxYPos: -150,
-        dx: 2,
+        gap: 120,
+        maxYPos: -100,
+        dx: 1.5,
         
         draw: function() {
             for (let i = 0; i < this.position.length; i++) {

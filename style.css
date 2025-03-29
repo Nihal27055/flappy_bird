@@ -58,16 +58,17 @@ body {
 #game-over h2 {
     color: white;
     font-size: 32px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 #final-score {
     color: white;
     font-size: 24px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
-button {
+#restart-button {
+    margin-top: 10px;
     padding: 10px 20px;
     font-size: 18px;
     background-color: #FFD700;
@@ -77,7 +78,21 @@ button {
     transition: background-color 0.2s;
 }
 
-button:hover {
+#restart-button:hover {
+    background-color: #FFC000;
+}
+
+#start-button {
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #FFD700;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#start-button:hover {
     background-color: #FFC000;
 }
 
