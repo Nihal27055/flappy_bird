@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let score = 0;
     let frames = 0;
     let bestScore = 0;
-    let speedMultiplier = 1.0;
+    let speedMultiplier = 3.0;
     
     // Bird object
     const bird = {
@@ -32,9 +32,9 @@ document.addEventListener('DOMContentLoaded', function() {
         y: canvas.height / 2,
         width: 34,
         height: 24,
-        gravity: 0.15,
+        gravity: 0.25,
         velocity: 0,
-        jump: 3.8,
+        jump: 5.0,
         rotation: 0,
         
         draw: function() {
@@ -271,7 +271,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Foreground (ground)
     const foreground = {
         h: 80,
-        dx: 2, // Speed of movement
+        dx: 4,
         
         draw: function() {
             ctx.fillStyle = '#ded895'; // Ground color
@@ -288,8 +288,8 @@ document.addEventListener('DOMContentLoaded', function() {
         position: [],
         gap: 160,
         maxYPos: -80,
-        baseSpeed: 1.2, // Base speed that will be multiplied
-        dx: 1.2, // Current speed
+        baseSpeed: 2.5,
+        dx: 2.5,
         
         draw: function() {
             for (let i = 0; i < this.position.length; i++) {
@@ -320,10 +320,10 @@ document.addEventListener('DOMContentLoaded', function() {
             let expectedMultiplier;
             if (score > 0 && score % 10 === 0) {
                 // Apply high speed for multiple of 10
-                expectedMultiplier = 10.5;
+                expectedMultiplier = 12.0;
             } else {
-                // Normal speed for other scores - increased base multiplier from 1.0 to 2.0
-                expectedMultiplier = 2.0 + scoreLevel * 0.8; // Increased from 0.5 to 0.8 for faster progression
+                // Normal speed increases with score level
+                expectedMultiplier = 3.0 + scoreLevel * 1.0;
             }
             
             // Check if multiplier has changed
@@ -390,13 +390,13 @@ document.addEventListener('DOMContentLoaded', function() {
         reset: function() {
             this.position = [];
             this.dx = this.baseSpeed; // Reset speed
-            speedMultiplier = 1.0;
-            pipeSpawnRate = 120;
+            speedMultiplier = 3.0; // Reset to initial higher speed of 3.0
+            pipeSpawnRate = 100; // Reduced from 120 to 100 for more frequent pipes
         }
     };
     
     // Variable for pipe spawn rate
-    let pipeSpawnRate = 120;
+    let pipeSpawnRate = 100;
     
     // Game loops
     function render() {
