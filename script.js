@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let score = 0;
     let frames = 0;
     let bestScore = 0;
-    let speedMultiplier = 1.0;
+    let speedMultiplier = 2;
     
     // Bird object
     const bird = {
