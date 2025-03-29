@@ -170,9 +170,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Pipes
     const pipes = {
         position: [],
-        gap: 120,
-        maxYPos: -100,
-        dx: 1.5,
+        gap: 160,
+        maxYPos: -80,
+        dx: 1.2,
         
         draw: function() {
             for (let i = 0; i < this.position.length; i++) {
@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function() {
         update: function() {
             if (gameState !== GAME_STATE.PLAYING) return;
             
-            if (frames % 100 === 0) {
+            if (frames % 120 === 0) {
                 this.position.push({
                     x: canvas.width,
                     y: this.maxYPos * (Math.random() + 1),
