@@ -41,25 +41,45 @@ document.addEventListener('DOMContentLoaded', function() {
             ctx.translate(this.x, this.y);
             ctx.rotate(this.rotation);
             
-            // Simple bird drawing
-            ctx.fillStyle = '#FF6347'; // Body
-            ctx.fillRect(-this.width/2, -this.height/2, this.width, this.height);
-            
-            ctx.fillStyle = 'white'; // Eye
+            // Bird body
+            ctx.fillStyle = '#FFD700'; // Golden yellow color
             ctx.beginPath();
-            ctx.arc(-this.width/4, -this.height/6, 4, 0, Math.PI * 2);
+            ctx.ellipse(0, 0, this.width/2, this.height/2, 0, 0, Math.PI * 2);
             ctx.fill();
             
-            ctx.fillStyle = 'black'; // Pupil
+            // Wings
+            ctx.fillStyle = '#FFA500'; // Orange color for wings
             ctx.beginPath();
-            ctx.arc(-this.width/4, -this.height/6, 2, 0, Math.PI * 2);
+            ctx.ellipse(-this.width/4, 0, this.width/3, this.height/3, -Math.PI/4, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(-this.width/4, 0, this.width/3, this.height/3, Math.PI/4, 0, Math.PI * 2);
             ctx.fill();
             
-            ctx.fillStyle = 'orange'; // Beak
+            // Head
+            ctx.fillStyle = '#FFD700';
             ctx.beginPath();
-            ctx.moveTo(this.width/4, 0);
-            ctx.lineTo(this.width/2, -this.height/6);
-            ctx.lineTo(this.width/2, this.height/6);
+            ctx.ellipse(this.width/4, -this.height/6, this.width/3, this.height/3, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Eye
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.arc(this.width/3, -this.height/4, 4, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Pupil
+            ctx.fillStyle = 'black';
+            ctx.beginPath();
+            ctx.arc(this.width/3, -this.height/4, 2, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Beak
+            ctx.fillStyle = '#FFA500';
+            ctx.beginPath();
+            ctx.moveTo(this.width/2, -this.height/6);
+            ctx.lineTo(this.width/1.5, -this.height/8);
+            ctx.lineTo(this.width/1.5, -this.height/24);
             ctx.fill();
             
             ctx.restore();
