@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let score = 0;
     let frames = 0;
     let bestScore = 0;
+    let speedMultiplier = 1.0;
     
     // Bird object
     const bird = {
@@ -172,7 +173,8 @@ document.addEventListener('DOMContentLoaded', function() {
         position: [],
         gap: 160,
         maxYPos: -80,
-        dx: 1.2,
+        baseSpeed: 1.2, // Base speed that will be multiplied
+        dx: 1.2, // Current speed
         
         draw: function() {
             for (let i = 0; i < this.position.length; i++) {
@@ -194,7 +196,17 @@ document.addEventListener('DOMContentLoaded', function() {
         update: function() {
             if (gameState !== GAME_STATE.PLAYING) return;
             
-            if (frames % 120 === 0) {
+            // Adjust speed based on score
+            // Speed increases at score 10, 20, 30, etc.
+            let expectedMultiplier = 1.0 + Math.floor(score / 10) * 0.1;
+            if (expectedMultiplier !== speedMultiplier) {
+                speedMultiplier = expectedMultiplier;
+                this.dx = this.baseSpeed * speedMultiplier;
+                // Make pipes appear more frequently as speed increases
+                pipeSpawnRate = Math.max(80, 120 - Math.floor(score / 10) * 4);
+            }
+            
+            if (frames % pipeSpawnRate === 0) {
                 this.position.push({
                     x: canvas.width,
                     y: this.maxYPos * (Math.random() + 1),
@@ -234,8 +246,14 @@ document.addEventListener('DOMContentLoaded', function() {
         
         reset: function() {
             this.position = [];
+            this.dx = this.baseSpeed; // Reset speed
+            speedMultiplier = 1.0;
+            pipeSpawnRate = 120;
         }
     };
+    
+    // Variable for pipe spawn rate
+    let pipeSpawnRate = 120;
     
     // Game loops
     function render() {
@@ -270,11 +288,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Game over
     function gameOver() {
         gameOverScreen.style.display = 'flex';
-        finalScoreElement.textContent = `Score: ${score}`;
         
+        // Update best score if current score is higher
         if (score > bestScore) {
             bestScore = score;
         }
+        
+        // Show final score and best score
+        finalScoreElement.textContent = `Score: ${score}  |  Best: ${bestScore}`;
     }
     
     // Reset game
