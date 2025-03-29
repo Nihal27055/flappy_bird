@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let score = 0;
     let frames = 0;
     let bestScore = 0;
-    let speedMultiplier = 2;
+    let speedMultiplier = 1.0;
     
     // Bird object
     const bird = {
@@ -133,23 +133,138 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Background
     const background = {
+        // Array to store background birds
+        birds: [
+            {x: 50, y: 50, direction: 1, speed: 0.5},
+            {x: 150, y: 90, direction: -1, speed: 0.3},
+            {x: 250, y: 70, direction: 1, speed: 0.7}
+        ],
+        
+        // Array to store cars
+        cars: [
+            {x: 0, y: canvas.height - 100, color: 'red', speed: 1.5, width: 40},
+            {x: 150, y: canvas.height - 95, color: 'blue', speed: 2.2, width: 45},
+            {x: 300, y: canvas.height - 105, color: 'yellow', speed: 1.8, width: 35}
+        ],
+        
+        // Buildings data
+        buildings: [
+            {x: 10, width: 60, height: 120, color: '#8B4513'},
+            {x: 80, width: 50, height: 150, color: '#A9A9A9'},
+            {x: 140, width: 70, height: 180, color: '#708090'},
+            {x: 220, width: 65, height: 140, color: '#B8860B'},
+            {x: 295, width: 55, height: 160, color: '#CD853F'}
+        ],
+        
         draw: function() {
-            ctx.fillStyle = '#70c5ce'; // Sky color
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            // Sky gradient
+            const skyGradient = ctx.createLinearGradient(0, 0, 0, canvas.height - 150);
+            skyGradient.addColorStop(0, '#6EC9E0');  // Light blue at top
+            skyGradient.addColorStop(1, '#CCEEFF');  // Lighter blue at bottom
+            ctx.fillStyle = skyGradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height - 150);
             
-            // Draw clouds
+            // Sun
+            ctx.fillStyle = '#FDB813';
+            ctx.beginPath();
+            ctx.arc(canvas.width - 60, 60, 30, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Sun rays
+            ctx.strokeStyle = '#FDB813';
+            ctx.lineWidth = 2;
+            for (let i = 0; i < 8; i++) {
+                const angle = (i * Math.PI / 4);
+                ctx.beginPath();
+                ctx.moveTo(
+                    canvas.width - 60 + Math.cos(angle) * 35,
+                    60 + Math.sin(angle) * 35
+                );
+                ctx.lineTo(
+                    canvas.width - 60 + Math.cos(angle) * 45,
+                    60 + Math.sin(angle) * 45
+                );
+                ctx.stroke();
+            }
+            
+            // Flying birds in the background
+            ctx.fillStyle = 'black';
+            for (let bird of this.birds) {
+                // Update bird position
+                bird.x += bird.speed * bird.direction;
+                if (bird.x > canvas.width + 20) bird.x = -20;
+                if (bird.x < -20) bird.x = canvas.width + 20;
+                
+                // Draw simple bird shape (like a horizontal "V")
+                ctx.beginPath();
+                if (bird.direction > 0) {
+                    // Flying right
+                    ctx.moveTo(bird.x, bird.y);
+                    ctx.lineTo(bird.x - 10, bird.y - 5);
+                    ctx.lineTo(bird.x - 10, bird.y + 5);
+                } else {
+                    // Flying left
+                    ctx.moveTo(bird.x, bird.y);
+                    ctx.lineTo(bird.x + 10, bird.y - 5);
+                    ctx.lineTo(bird.x + 10, bird.y + 5);
+                }
+                ctx.fill();
+            }
+            
+            // Buildings
+            for (let building of this.buildings) {
+                // Building body
+                ctx.fillStyle = building.color;
+                ctx.fillRect(building.x, canvas.height - 150 - building.height, building.width, building.height);
+                
+                // Windows
+                ctx.fillStyle = '#FFFF99';
+                const windowSize = 8;
+                const windowSpacing = 15;
+                for (let wx = building.x + 10; wx < building.x + building.width - 10; wx += windowSpacing) {
+                    for (let wy = canvas.height - 150 - building.height + 15; wy < canvas.height - 150 - 10; wy += windowSpacing) {
+                        // Randomly make some windows lit, some dark
+                        if (Math.random() > 0.3) {
+                            ctx.fillRect(wx, wy, windowSize, windowSize);
+                        }
+                    }
+                }
+            }
+            
+            // Road
+            ctx.fillStyle = '#555555';
+            ctx.fillRect(0, canvas.height - 120, canvas.width, 40);
+            
+            // Road markings
             ctx.fillStyle = 'white';
-            ctx.beginPath();
-            ctx.arc(100, 80, 30, 0, Math.PI * 2);
-            ctx.arc(130, 80, 35, 0, Math.PI * 2);
-            ctx.arc(160, 80, 25, 0, Math.PI * 2);
-            ctx.fill();
+            for (let x = 0; x < canvas.width; x += 40) {
+                ctx.fillRect(x, canvas.height - 100, 20, 5);
+            }
             
-            ctx.beginPath();
-            ctx.arc(280, 120, 25, 0, Math.PI * 2);
-            ctx.arc(310, 120, 30, 0, Math.PI * 2);
-            ctx.arc(340, 120, 20, 0, Math.PI * 2);
-            ctx.fill();
+            // Cars
+            for (let car of this.cars) {
+                // Update car position
+                car.x += car.speed;
+                if (car.x > canvas.width) {
+                    car.x = -car.width;
+                }
+                
+                // Car body
+                ctx.fillStyle = car.color;
+                ctx.fillRect(car.x, car.y, car.width, 15);
+                ctx.fillRect(car.x + 5, car.y - 10, car.width - 10, 10);
+                
+                // Car wheels
+                ctx.fillStyle = 'black';
+                ctx.beginPath();
+                ctx.arc(car.x + 10, car.y + 15, 5, 0, Math.PI * 2);
+                ctx.arc(car.x + car.width - 10, car.y + 15, 5, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            // Grassy area between road and foreground
+            ctx.fillStyle = '#4CAF50';
+            ctx.fillRect(0, canvas.height - 80, canvas.width, 20);
         }
     };
     
@@ -197,13 +312,41 @@ document.addEventListener('DOMContentLoaded', function() {
             if (gameState !== GAME_STATE.PLAYING) return;
             
             // Adjust speed based on score
-            // Speed increases at score 10, 20, 30, etc.
-            let expectedMultiplier = 1.0 + Math.floor(score / 10) * 0.1;
+            // Speed dramatically increases at score 10, 20, 30, etc.
+            // Calculate how many multiples of 10 in the score
+            const scoreLevel = Math.floor(score / 10);
+            
+            // If score is a multiple of 10 (10, 20, 30, etc), apply high speed, otherwise normal speed
+            let expectedMultiplier;
+            if (score > 0 && score % 10 === 0) {
+                // Apply high speed for multiple of 10
+                expectedMultiplier = 10.5;
+            } else {
+                // Normal speed for other scores
+                expectedMultiplier = 1.0 + scoreLevel * 0.5; // Gradual increase between multiples of 10
+            }
+            
+            // Check if multiplier has changed
             if (expectedMultiplier !== speedMultiplier) {
                 speedMultiplier = expectedMultiplier;
                 this.dx = this.baseSpeed * speedMultiplier;
-                // Make pipes appear more frequently as speed increases
-                pipeSpawnRate = Math.max(80, 120 - Math.floor(score / 10) * 4);
+                
+                // Make pipes appear more frequently as score increases
+                pipeSpawnRate = Math.max(70, 120 - scoreLevel * 5);
+                
+                // Visual feedback when speed increases
+                if (score > 0 && score % 10 === 0) {
+                    // Flash the score to indicate speed increase
+                    scoreElement.style.fontSize = '60px';
+                    scoreElement.style.color = '#FF0000'; // Bright red for dramatic effect
+                    // Add screen flash effect
+                    document.body.style.backgroundColor = '#FFF';
+                    setTimeout(function() {
+                        scoreElement.style.fontSize = '40px';
+                        scoreElement.style.color = 'white';
+                        document.body.style.backgroundColor = '';
+                    }, 300);
+                }
             }
             
             if (frames % pipeSpawnRate === 0) {
