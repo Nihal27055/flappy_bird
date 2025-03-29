@@ -28,7 +28,7 @@ A browser-based implementation of the classic Flappy Bird game using HTML, CSS, 
 
 ## Play Online
 
-You can play the game online at [https://yourname.github.io/flappy-bird](https://yourname.github.io/flappy-bird)
+You can play the game online at [https://nihal27055.github.io/flappy_bird/](https://nihal27055.github.io/flappy_bird/)
 
 ## Game Controls
 
