@@ -10,10 +10,12 @@ A browser-based implementation of the classic Flappy Bird game using HTML, CSS, 
 - Score tracking
 - Collision detection
 - Animated bird and pipe obstacles
+- Beautiful city background with buildings, cars, and flying birds
+- Progressive difficulty that increases with your score
 
 ## How to Play
 
-1. Open `flappy_bird.html` in a web browser
+1. Open `index.html` in a web browser
 2. Click the "Start Game" button or press the Space bar / Up arrow key
 3. Control the bird:
    - Click the screen
@@ -21,7 +23,12 @@ A browser-based implementation of the classic Flappy Bird game using HTML, CSS, 
    - Press the Up arrow key
 4. Navigate through the pipes without hitting them
 5. Each pipe you pass earns you 1 point
-6. Try to achieve the highest score possible
+6. The game becomes faster every 10 points
+7. Try to achieve the highest score possible
+
+## Play Online
+
+You can play the game online at [https://yourname.github.io/flappy-bird](https://yourname.github.io/flappy-bird)
 
 ## Game Controls
 
@@ -31,8 +38,9 @@ A browser-based implementation of the classic Flappy Bird game using HTML, CSS, 
 
 ## Files
 
-- `flappy_bird.html`: The main HTML file containing the game structure and styling
-- `flappy_bird.js`: JavaScript file with game logic and mechanics
+- `index.html`: The main HTML file containing the game structure
+- `style.css`: CSS file for styling the game interface
+- `script.js`: JavaScript file with game logic and mechanics
 
 ## Game Mechanics
 
@@ -41,6 +49,8 @@ A browser-based implementation of the classic Flappy Bird game using HTML, CSS, 
 - Pipes appear from the right side of the screen and move to the left
 - Colliding with pipes or the ground ends the game
 - Each successfully passed pipe pair adds 1 to your score
+- Game speed increases gradually as your score increases
+- Your high score is recorded and displayed when the game ends
 
 ## Development
 This game was created using:
