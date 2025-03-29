@@ -322,8 +322,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Apply high speed for multiple of 10
                 expectedMultiplier = 10.5;
             } else {
-                // Normal speed for other scores
-                expectedMultiplier = 1.0 + scoreLevel * 0.5; // Gradual increase between multiples of 10
+                // Normal speed for other scores - increased base multiplier from 1.0 to 2.0
+                expectedMultiplier = 2.0 + scoreLevel * 0.8; // Increased from 0.5 to 0.8 for faster progression
             }
             
             // Check if multiplier has changed
